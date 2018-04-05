@@ -33,6 +33,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.text.TextUtils;
 import android.util.EventLog;
 import android.util.Log;
@@ -452,6 +453,17 @@ public class CachedBluetoothDevice implements Comparable<CachedBluetoothDevice> 
 
         if (state != BluetoothDevice.BOND_NONE) {
             final BluetoothDevice dev = mDevice;
+            if (mDevice.isTwsPlusDevice()) {
+               BluetoothDevice peerDevice = getTwsPeerDevice();
+               if (peerDevice != null) {
+                   final boolean peersuccessful = peerDevice.removeBond();
+                   if (peersuccessful) {
+                       if (Utils.D) {
+                           Log.d(TAG, "Command sent successfully:REMOVE_BOND " + peerDevice.getName());
+                       }
+                   }
+                }
+            }
             if (dev != null) {
                 mUnpairing = true;
                 final boolean successful = dev.removeBond();
@@ -807,6 +819,12 @@ public class CachedBluetoothDevice implements Comparable<CachedBluetoothDevice> 
                     connect();
                 }
             } else if (mIsBondingInitiatedLocally) {
+            if (SystemProperties.getBoolean("persist.vendor.bt.connect.peer_earbud", true)) {
+                Log.d(TAG, "Initiating connection to" + mDevice);
+                if (mDevice.isBondingInitiatedLocally() || mDevice.isTwsPlusDevice()) {
+                    connect();
+                }
+            } else if (mDevice.isBondingInitiatedLocally()) {
                 connect();
             }
         }
