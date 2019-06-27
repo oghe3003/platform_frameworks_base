@@ -824,7 +824,7 @@ public class CachedBluetoothDevice implements Comparable<CachedBluetoothDevice> 
                 if (mDevice.isBondingInitiatedLocally() || mDevice.isTwsPlusDevice()) {
                     connect();
                 }
-            } else if (mDevice.isBondingInitiatedLocally()) {
+            } else if (mIsBondingInitiatedLocally) {
                 connect();
             }
         }
