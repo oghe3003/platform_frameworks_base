@@ -251,7 +251,7 @@ public class DeviceGroupClientProfile implements LocalBluetoothProfile {
             return null;
         }
 
-        return mService.getGroup(groupId, true);
+        return mService.getGroup(groupId);
     }
 
     public List<DeviceGroup> getDiscoveredGroups () {
@@ -263,7 +263,7 @@ public class DeviceGroupClientProfile implements LocalBluetoothProfile {
            return null;
        }
 
-       return mService.getDiscoveredGroups(true);
+       return mService.getDiscoveredGroups();
     }
 
     public boolean isGroupDiscoveryInProgress (int groupId) {
@@ -286,7 +286,7 @@ public class DeviceGroupClientProfile implements LocalBluetoothProfile {
            return BluetoothDeviceGroup.INVALID_GROUP_ID;
        }
 
-       return mService.getRemoteDeviceGroupId(device, null, true);
+       return mService.getRemoteDeviceGroupId(device, null);
     }
 
     public boolean isProfileReady() {

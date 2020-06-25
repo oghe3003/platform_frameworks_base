@@ -210,7 +210,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         final IBluetoothDeviceGroup service = getService();
         if (service != null) {
             try {
-                service.unregisterGroupClientApp(mAppId, mAttributionSource);
+                service.unregisterGroupClientApp(mAppId);
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
             }
@@ -455,8 +455,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         mAppRegistered = true;
         try {
             UUID uuid = UUID.randomUUID();
-            service.registerGroupClientApp(new ParcelUuid(uuid), mBluetoothGroupCallback,
-                    mAttributionSource);
+            service.registerGroupClientApp(new ParcelUuid(uuid), mBluetoothGroupCallback);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -498,7 +497,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
 
         try {
             UUID uuid = UUID.randomUUID();
-            service.startGroupDiscovery(mAppId ,groupId, mAttributionSource);
+            service.startGroupDiscovery(mAppId ,groupId);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -533,7 +532,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            service.stopGroupDiscovery(mAppId ,groupId, mAttributionSource);
+            service.stopGroupDiscovery(mAppId ,groupId);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -560,7 +559,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
      */
     @RequiresBluetoothConnectPermission
     @RequiresPermission(android.Manifest.permission.BLUETOOTH_CONNECT)
-    public List<DeviceGroup> getDiscoveredGroups(boolean mPublicAddr) {
+    public List<DeviceGroup> getDiscoveredGroups() {
         if (DBG) log("getDiscoveredGroups()");
 
         if (!mAppRegistered) {
@@ -576,7 +575,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            List<DeviceGroup> groups = service.getDiscoveredGroups(mPublicAddr, mAttributionSource);
+            List<DeviceGroup> groups = service.getDiscoveredGroups();
             return groups;
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
@@ -608,7 +607,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
      */
     @RequiresBluetoothConnectPermission
     @RequiresPermission(android.Manifest.permission.BLUETOOTH_CONNECT)
-    public DeviceGroup getGroup(int groupId, boolean mPublicAddr) {
+    public DeviceGroup getGroup(int groupId) {
         if (DBG) log("getGroup() : groupId = " + groupId);
 
         if (!mAppRegistered) {
@@ -624,7 +623,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            DeviceGroup group = service.getDeviceGroup(groupId, mPublicAddr, mAttributionSource);
+            DeviceGroup group = service.getDeviceGroup(groupId);
             return group;
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
@@ -660,8 +659,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
      */
     @RequiresBluetoothConnectPermission
     @RequiresPermission(android.Manifest.permission.BLUETOOTH_CONNECT)
-    public int getRemoteDeviceGroupId (BluetoothDevice device, ParcelUuid uuid,
-            boolean mPublicAddr) {
+    public int getRemoteDeviceGroupId (BluetoothDevice device, ParcelUuid uuid) {
         if (DBG) log("getRemoteDeviceGroupId() : device = " + device);
 
         if (!mAppRegistered) {
@@ -678,7 +676,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            return service.getRemoteDeviceGroupId(device, uuid, mPublicAddr, mAttributionSource);
+            return service.getRemoteDeviceGroupId(device, uuid);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -711,7 +709,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            return service.isGroupDiscoveryInProgress(groupId, mAttributionSource);
+            return service.isGroupDiscoveryInProgress(groupId);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -753,7 +751,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            service.setExclusiveAccess(mAppId, groupId, devices, value, mAttributionSource);
+            service.setExclusiveAccess(mAppId, groupId, devices, value);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -791,7 +789,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            service.getExclusiveAccessStatus(mAppId, groupId, devices, mAttributionSource);
+            service.getExclusiveAccessStatus(mAppId, groupId, devices);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -830,7 +828,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            service.connect(mAppId, device, mAttributionSource);
+            service.connect(mAppId, device);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
@@ -863,7 +861,7 @@ public final class BluetoothDeviceGroup implements BluetoothProfile {
         }
 
         try {
-            service.disconnect(mAppId, device, mAttributionSource);
+            service.disconnect(mAppId, device);
         } catch (RemoteException e) {
             Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
         }
