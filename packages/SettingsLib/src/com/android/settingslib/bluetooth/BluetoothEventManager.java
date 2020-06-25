@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.UUID;
 
 /**
  * BluetoothEventManager receives broadcasts and callbacks from the Bluetooth
@@ -238,6 +239,32 @@ public class BluetoothEventManager {
     private void dispatchAclStateChanged(CachedBluetoothDevice activeDevice, int state) {
         for (BluetoothCallback callback : mCallbacks) {
             callback.onAclConnectionStateChanged(activeDevice, state);
+        }
+    }
+
+    private void dispatchA2dpCodecConfigChanged(CachedBluetoothDevice cachedDevice,
+            BluetoothCodecStatus codecStatus) {
+        for (BluetoothCallback callback : mCallbacks) {
+            callback.onA2dpCodecConfigChanged(cachedDevice, codecStatus);
+        }
+    }
+
+    protected void dispatchNewGroupFound(
+            CachedBluetoothDevice cachedDevice, int groupId, UUID setPrimaryServiceUuid) {
+        synchronized(mCallbacks) {
+            for (BluetoothCallback callback : mCallbacks) {
+                callback.onNewGroupFound(cachedDevice, groupId,
+                        setPrimaryServiceUuid);
+            }
+        }
+    }
+
+    protected void dispatchGroupDiscoveryStatusChanged(int groupId,
+            int status, int reason) {
+        synchronized(mCallbacks) {
+            for (BluetoothCallback callback : mCallbacks) {
+                callback.onGroupDiscoveryStatusChanged(groupId, status, reason);
+            }
         }
     }
 

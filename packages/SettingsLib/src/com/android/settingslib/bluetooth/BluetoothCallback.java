@@ -17,6 +17,8 @@
 package com.android.settingslib.bluetooth;
 
 
+import java.util.UUID;
+
 /**
  * BluetoothCallback provides a callback interface for the settings
  * UI to receive events from {@link BluetoothEventManager}.
@@ -140,4 +142,38 @@ public interface BluetoothCallback {
      */
     default void onAclConnectionStateChanged(CachedBluetoothDevice cachedDevice, int state) {
     }
+
+    /**
+     * Called when a2dp codec config is changed. It listens to
+     * {@link android.bluetooth.BluetoothA2dp#ACTION_CODEC_CONFIG_CHANGED}.
+     *
+     * @param cachedDevice Bluetooth device that changed
+     * @param codecStatus  the current codec status of the a2dp profile
+     */
+    default void onA2dpCodecConfigChanged(CachedBluetoothDevice cachedDevice,
+            BluetoothCodecStatus codecStatus) {
+    }
+
+    /**
+     * Called when new device group has been identified with the bonded remote device
+     *
+     * @param cachedDevice Bluetooth device with which device group has been found.
+     * @param groupId Identifier of the device group.
+     * @param setPrimaryServiceUuid Primary service with which this Device Group
+     *                              is associated.
+     */
+    default void onNewGroupFound(CachedBluetoothDevice cachedDevice, int groupId,
+            UUID setPrimaryServiceUuid) {
+    }
+
+    /**
+     * Called when Group Discovery status has been changed.
+     *
+     * @param groupId Identifier of the coordinated set.
+     * @param status Status of the group discovery procedure.
+     * @param reason Reason for the change in status of discovery.
+     */
+    default void onGroupDiscoveryStatusChanged (int groupId, int status, int reason) {
+    }
+
 }
