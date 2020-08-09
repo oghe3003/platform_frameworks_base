@@ -16,6 +16,7 @@
 
 package com.android.settingslib.bluetooth;
 
+import android.bluetooth.BluetoothCodecStatus;
 
 import java.util.UUID;
 
