@@ -273,6 +273,7 @@ public class BluetoothEventManager {
     protected void dispatchNewGroupFound(
             CachedBluetoothDevice cachedDevice, int groupId, UUID setPrimaryServiceUuid) {
         synchronized(mCallbacks) {
+            updateCacheDeviceInfo(groupId, cachedDevice);
             for (BluetoothCallback callback : mCallbacks) {
                 callback.onNewGroupFound(cachedDevice, groupId,
                         setPrimaryServiceUuid);
@@ -393,6 +394,21 @@ public class BluetoothEventManager {
                 cachedDevice = mDeviceManager.addDevice(device);
             }
 
+            if(bondState == BluetoothDevice.BOND_BONDED) {
+                int groupId  = intent.getIntExtra(BluetoothDevice.EXTRA_GROUP_ID,
+                        BluetoothDevice.ERROR);
+                if (groupId != BluetoothDevice.ERROR && groupId >= 0) {
+                    updateCacheDeviceInfo(groupId, cachedDevice);
+                } else if (intent.getBooleanExtra(BluetoothDevice.EXTRA_IS_PRIVATE_ADDRESS,
+                        false)) {
+                    /*
+                     * Do not show private address in UI, just ignore assuming remaining
+                     * events will receive on public address (connection, disconnection)
+                     */
+                    Log.d(TAG, "Hide showing private address in UI  " + cachedDevice);
+                    updateIgnoreDeviceFlag(cachedDevice);
+                }
+            }
             for (BluetoothCallback callback : mCallbacks) {
                 callback.onDeviceBondStateChanged(cachedDevice, bondState);
             }
@@ -568,4 +584,50 @@ public class BluetoothEventManager {
             dispatchAudioModeChanged();
         }
     }
+
+    private class A2dpCodecConfigChangedHandler implements Handler {
+
+        @Override
+        public void onReceive(Context context, Intent intent, BluetoothDevice device) {
+            final String action = intent.getAction();
+            if (action == null) {
+                Log.w(TAG, "A2dpCodecConfigChangedHandler: action is null");
+                return;
+            }
+
+            CachedBluetoothDevice cachedDevice = mDeviceManager.findDevice(device);
+            if (cachedDevice == null) {
+                Log.w(TAG, "A2dpCodecConfigChangedHandler: device is null");
+                return;
+            }
+
+            BluetoothCodecStatus codecStatus = intent.getParcelableExtra(
+                    BluetoothCodecStatus.EXTRA_CODEC_STATUS);
+            Log.d(TAG, "A2dpCodecConfigChangedHandler: device=" + device +
+                    ", codecStatus=" + codecStatus);
+            dispatchA2dpCodecConfigChanged(cachedDevice, codecStatus);
+        }
+    }
+
+    private void updateCacheDeviceInfo(int groupId, CachedBluetoothDevice cachedDevice) {
+        BluetoothDevice device = cachedDevice.getDevice();
+        boolean isGroup = cachedDevice.isGroupDevice();
+        Log.d(TAG, "updateCacheDeviceInfo groupId " + groupId
+                + ", cachedDevice :" + cachedDevice + ", name :" + cachedDevice.getName()
+                +" isGroup :" + isGroup + " groupId " + cachedDevice.getSetId());
+        if (isGroup) {
+            if (groupId !=  cachedDevice.getSetId()) {
+                Log.d(TAG, "groupId mismatch ignore" + cachedDevice.getSetId());
+                return;
+            }
+            Log.d(TAG, "updateCacheDeviceInfo update ignored ");
+        } else {
+            cachedDevice.setDeviceType(groupId);
+        }
+    }
+
+    private void updateIgnoreDeviceFlag(CachedBluetoothDevice cachedDevice) {
+        cachedDevice.setDeviceType(CachedBluetoothDevice.PRIVATE_ADDR);
+    }
+
 }
