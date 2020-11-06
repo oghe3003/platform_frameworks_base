@@ -234,14 +234,14 @@ public interface BluetoothProfile {
      * BC_PROFILE
      * @hide
      */
-    public static final int BC_PROFILE = 25;
+    public static final int BC_PROFILE = 26;
 
     /**
    /**
      * PC_PROFILE
      * @hide
      */
-    public static final int PC_PROFILE = 26;
+    public static final int PC_PROFILE = 27;
 
    /**
      * CC_SERVER
@@ -261,7 +261,7 @@ public interface BluetoothProfile {
      *
      * @hide
      */
-    int MAX_PROFILE_ID = 27;
+    int MAX_PROFILE_ID = 28;
 
     /**
      * Default priority for devices that we try to auto-connect to and

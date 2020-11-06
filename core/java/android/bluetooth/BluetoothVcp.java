@@ -155,6 +155,7 @@ public final class BluetoothVcp implements BluetoothProfile {
     public static final int MEDIA_STREAM = 1;
 
     private BluetoothAdapter mAdapter;
+
     private final AttributionSource mAttributionSource;
     private final BluetoothProfileConnector<IBluetoothVcp> mProfileConnector =
             new BluetoothProfileConnector(this, BluetoothProfile.VCP,
@@ -219,7 +220,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                return service.getConnectionState(device, mAttributionSource);
+                return service.getConnectionState(device);
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return BluetoothProfile.STATE_DISCONNECTED;
@@ -248,7 +249,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                return service.getConnectionMode(device, mAttributionSource);
+                return service.getConnectionMode(device);
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return MODE_NONE;
@@ -272,7 +273,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                service.setAbsoluteVolume(device, volume, mAttributionSource);
+                service.setAbsoluteVolume(device, volume);
                 return;
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
@@ -296,7 +297,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                return service.getAbsoluteVolume(device, mAttributionSource);
+                return service.getAbsoluteVolume(device);
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return -1;
@@ -320,7 +321,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                service.setMute(device, enableMute, mAttributionSource);
+                service.setMute(device, enableMute);
                 return;
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
@@ -345,7 +346,7 @@ public final class BluetoothVcp implements BluetoothProfile {
                 getService();
         if (service != null && isEnabled() && isValidDevice(device)) {
             try {
-                return service.isMute(device, mAttributionSource);
+                return service.isMute(device);
             } catch (RemoteException e) {
                 Log.e(TAG, "Stack:" + Log.getStackTraceString(new Throwable()));
                 return false;

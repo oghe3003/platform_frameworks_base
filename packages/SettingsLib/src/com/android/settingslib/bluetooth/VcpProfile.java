@@ -190,7 +190,7 @@ public class VcpProfile implements LocalBluetoothProfile {
     }
 
     public int getSummaryResourceForDevice(BluetoothDevice device) {
-        return 0;     // VCP profile not displayed in UI
+        return 0;	  // VCP profile not displayed in UI
     }
 
     public int getDrawableResource(BluetoothClass btClass) {
