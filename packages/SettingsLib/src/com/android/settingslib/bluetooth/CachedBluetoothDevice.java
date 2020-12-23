@@ -188,6 +188,7 @@ public class CachedBluetoothDevice implements Comparable<CachedBluetoothDevice> 
         };
     }
 
+
     /* Gets Device for seondary TWS device
      * @param mDevice Primary TWS device  to get secondary
      * @return Description of the device
