@@ -256,6 +256,18 @@ public class BluetoothEventManager {
         }
     }
 
+    private void dispatchBroadcastStateChanged(int state) {
+        for (BluetoothCallback callback : mCallbacks) {
+            callback.onBroadcastStateChanged(state);
+        }
+    }
+
+    private void dispatchBroadcastKeyGenerated() {
+        for (BluetoothCallback callback : mCallbacks) {
+            callback.onBroadcastKeyGenerated();
+        }
+    }
+
     @VisibleForTesting
     void dispatchActiveDeviceChanged(CachedBluetoothDevice activeDevice,
             int bluetoothProfile) {
@@ -380,6 +392,22 @@ public class BluetoothEventManager {
             int state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE,
                     BluetoothAdapter.ERROR);
             dispatchConnectionStateChanged(cachedDevice, state);
+        }
+    }
+
+    private class BroadcastStateChangedHandler implements Handler {
+        //@Override
+        public void onReceive(Context context, Intent intent, BluetoothDevice device) {
+            int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE,
+                    BluetoothAdapter.ERROR);
+            dispatchBroadcastStateChanged(state);
+        }
+    }
+
+    private class BroadcastKeyGeneratedHandler implements Handler {
+        //@Override
+        public void onReceive(Context context, Intent intent, BluetoothDevice device) {
+            dispatchBroadcastKeyGenerated();
         }
     }
 
