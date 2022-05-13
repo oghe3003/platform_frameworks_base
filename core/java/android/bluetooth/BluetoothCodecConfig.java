@@ -85,20 +85,11 @@ public final class BluetoothCodecConfig implements Parcelable {
     public static final int SOURCE_CODEC_TYPE_CELT = 8;
 
     @UnsupportedAppUsage
-    public static final int SOURCE_CODEC_TYPE_APTX_ADAPTIVE = SOURCE_CODEC_TYPE_MAX;
-
-    @UnsupportedAppUsage
-    public static final int SOURCE_CODEC_TYPE_APTX_TWSP = SOURCE_CODEC_TYPE_MAX + 1;
-
-    @UnsupportedAppUsage
     public static final int SOURCE_QVA_CODEC_TYPE_MAX = SOURCE_CODEC_TYPE_MAX + 2;
 
     /* CELT is not an A2DP Codec and only used to fetch encoder
     ** format for BA usecase, moving out of a2dp codec value list
     */
-    @UnsupportedAppUsage
-    public static final int SOURCE_CODEC_TYPE_CELT = 8;
-
     @UnsupportedAppUsage
     public static final int SOURCE_CODEC_TYPE_LC3 = 9;
 
